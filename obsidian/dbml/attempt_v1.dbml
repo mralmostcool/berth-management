@@ -1,0 +1,123 @@
+Table flags {
+  id int [pk]
+  name varchar(255) [not null]
+  iso_code varchar(3) [not null, unique]
+  imo_flag_code varchar(10)
+  Indexes {
+    iso_code
+  }
+}
+
+Enum berth_status {
+  AVAILABLE
+  OCCUPIED
+  EXPIRED
+}
+
+Enum allocation_status {
+  SCHEDULED
+  OCCUPIED
+  EXPIRED
+}
+
+Enum contract_action {
+  SIGN_ON
+  SIGN_OFF
+}
+
+// --------------------------
+
+Table shipping_company {
+  id uuid [pk]
+  name varchar [not null]
+  is_active boolean [default: true]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table vessel {
+  id uuid [pk]
+  imo varchar(7) [not null]
+  is_active boolean [default: true]
+  flag_id uuid [not null, ref: > flags.id]
+  shipping_company_id uuid [not null, ref: > shipping_company.id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table berth {
+  id uuid [pk]
+  name varchar(40) [not null]
+  vessel_id uuid [not null, ref: > vessel.id]
+  status berth_status [default: berth_status.AVAILABLE]
+  duration timestamp [not null]
+  start_date timestamp [not null]
+  end_date timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table allocation {
+  id uuid [pk]
+  berth_id uuid [not null, ref: > berth.id]
+  start_date timestamp [not null]
+  end_date timestamp [not null]
+  sign_on_date timestamp
+  sign_off_date timestamp
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table student {
+  id uuid [pk]
+  indos varchar [not null, unique]
+  rank varchar [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table pre_sea_course {
+  id uuid [pk]
+  name varchar [not null]
+  description varchar
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table enrollment {
+  id uuid [pk]
+  student_id uuid [not null, ref: > student.id]
+  pre_sea_course_id uuid [not null, ref: > pre_sea_course.id]
+  is_completed boolean [default: false]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table contract {
+  id uuid [pk]
+  shipping_company_id uuid [not null, ref: > shipping_company.id]
+  vessel_id uuid [not null, ref: > vessel.id]
+  student_id uuid [not null, ref: > student.id]
+  start_date timestamp [not null]
+  is_approved boolean [default: false]
+  allocation_id uuid [not null, ref: > allocation.id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table contract_log {
+  id uuid [pk]
+  contract_id uuid [not null, ref: > contract.id]
+  action contract_action [not null]
+  created_at timestamp [not null]
+}
+
+
+
+
+
+
+
+
+
+

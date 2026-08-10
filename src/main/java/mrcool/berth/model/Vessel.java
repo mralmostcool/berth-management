@@ -24,23 +24,33 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "shipping_company")
-public class ShippingCompany {
+@Table(name = "vessel")
+public class Vessel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @NotNull
+    @Column(name = "imo", nullable = false)
+    private String imo;
 
+    @NotNull
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
     @NotNull
+    @Column(name = "flag_id", nullable = false)
+    private UUID flagId;
+
+    @NotNull
+    @Column(name = "shipping_company_id", nullable = false)
+    private UUID shippingCompanyId;
+
+    @NotNull
     @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createAt;
+    private OffsetDateTime createdAt;
 
     @NotNull
     @Column(name = "updated_at", nullable = false)
@@ -48,7 +58,7 @@ public class ShippingCompany {
 
     @PrePersist
     public void onCreate() {
-        this.createAt = OffsetDateTime.now();
+        this.createdAt = OffsetDateTime.now();
         this.updatedAt = OffsetDateTime.now();
     }
 
@@ -56,17 +66,4 @@ public class ShippingCompany {
     public void onUpdate() {
         this.updatedAt = OffsetDateTime.now();
     }
-
-    // CREATE OR REPLACE FUNCTION set_update_at()
-    // RETURNS TRIGGER AS $$
-    // BEGIN
-    // NEW.updated_at = CURRENT_TIMESTAMP;
-    // RETURN NEW;
-    // END;
-    // $$ LANGUAGE plpgsql;
-
-    // CREATE TRIGGER trg_shipping_company_updated_at
-    // BEFORE UPDATE ON shipping_company
-    // FOR EACH ROW EXECUTE FUNCTION set_update_at();
-
 }

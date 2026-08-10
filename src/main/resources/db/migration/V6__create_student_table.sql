@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS student (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    indos VARCHAR(10),
+    rank VARCHAR(255),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE OR REPLACE FUNCTION set_updated_at()
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_student_updated_at
+    BEFORE UPDATE ON student
+    FOR EACH ROW
+    EXECUTE FUNCTION set_updated_at();

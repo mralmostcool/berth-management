@@ -33,9 +33,10 @@ server:
 
 logging:
   level:
-    org.flywaydb: INFO
+    org.flywaydb: DEBUG
     org.hibernate.SQL: WARN
     io.github.cdimascio: DEBUG
+
 
 management:
   endpoints:

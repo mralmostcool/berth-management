@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS shipping_company (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE OR REPLACE FUNCTION set_update_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_shipping_company_updated_at
+BEFORE UPDATE ON shipping_company
+FOR EACH ROW EXECUTE FUNCTION set_update_at();

@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import mrcool.berth.models.Flags;
-import mrcool.berth.repositories.FlagsRepository;
+import mrcool.berth.model.Flags;
+import mrcool.berth.repository.FlagsRepository;
 
 @Service
 @RequiredArgsConstructor

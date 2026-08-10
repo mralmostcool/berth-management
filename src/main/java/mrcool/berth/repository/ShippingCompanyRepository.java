@@ -5,11 +5,9 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import mrcool.berth.model.Flags;
+import mrcool.berth.model.ShippingCompany;
 
 @Repository
-public interface FlagsRepository extends JpaRepository<Flags, UUID> {
-
-    public String findNameById(UUID id);
+public interface ShippingCompanyRepository extends JpaRepository<ShippingCompany, UUID> {
 
 }

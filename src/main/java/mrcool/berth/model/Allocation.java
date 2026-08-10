@@ -3,6 +3,8 @@ package mrcool.berth.model;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import mrcool.berth.model.enums.AllocationStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

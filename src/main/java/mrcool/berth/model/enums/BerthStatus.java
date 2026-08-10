@@ -1,4 +1,4 @@
-package mrcool.berth.model;
+package mrcool.berth.model.enums;
 
 public enum BerthStatus {
     available,

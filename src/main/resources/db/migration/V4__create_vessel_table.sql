@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS vessel (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    imo VARCHAR(7) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    flag_id UUID REFERENCES flags(id) ON DELETE CASCADE,
+    shipping_company_id UUID REFERENCES shipping_company(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE OR REPLACE FUNCTION set_update_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_vessel_updated_at
+BEFORE UPDATE ON vessel
+FOR EACH ROW EXECUTE FUNCTION set_update_at();
